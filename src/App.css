@@ -1,14 +1,19 @@
 .App {
 	max-width: 640px;
+  padding-top: 30px;
 	margin: 0 auto;
 	overflow: hidden;
 	font-size: 1.5rem;
 }
 
 .App h3 {
-	margin: 30px 0 0 0;
 	padding: 30px 0;
 	background-color: plum;
 	text-align: center;
 	color: #eee;
 }
+
+.App ul.tabMenu {margin:0;padding:0;}
+.App ul.tabMenu:after {content:'';display:block;clear:both;}
+.App ul.tabMenu li { float:left;padding:5px 10px;list-style:none;color:#eee;font-size:1rem;border-radius:5px 5px 0 0;background:rgba(221,160,221,0.3);cursor:pointer;}
+.App ul.tabMenu li.on {background:rgba(221,160,221,1);color:#000;}

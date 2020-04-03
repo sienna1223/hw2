@@ -9,50 +9,124 @@ import TodoItem from './components/TodoItem';
 class App extends Component {
 
 	state  = {
-		todos : [],
+    type : 'songs',
+    songs : [],
+    apps : []
 	};
-	
+
   key = 1;
 
 	handleSubmit = (text) => {
-		this.setState({
-			todos : this.state.todos.concat({
-        key : this.key++,
-        text : text,
-        done : false
-			}),
-    })
+	  const {type} = this.state;
+
+	  if(text) {
+      this.setState({
+        [type] : this.state[type].concat({
+          key : this.key++,
+          text,
+          done : false,
+          rating : 0.0,
+        }),
+      })
+    }else{
+	    alert('내용을 입력해주세요.')
+    }
 	};
 
-
 	handleRemove = (key) => {
+    const {type} = this.state;
+
 		this.setState({
-			todos : this.state.todos.filter(todo => {
+      [type] : this.state[type].filter(todo => {
 				return key !== todo.key;
-			})	
+			})
 		})
   };
-  
-  handleToggle = (key) => {
+
+  handleRating = (action, key) => {
+    const {type} = this.state;
+    const star = {
+      min : 0,
+      max : 5
+    };
+    const score = {
+      min : 0.0,
+      max : 9.9
+    };
+
     this.setState({
-			todos : this.state.todos.map(todo => {
+      [type] : this.state[type].map(todo => {
+        if(key === todo.key){
+          if(type === 'songs'){
+            if(action === 'plus' && todo.rating < star.max)
+              return {...todo, rating : ++todo.rating };
+            else if (action === 'minus' && todo.rating > star.min)
+              return {...todo, rating : --todo.rating };
+            else
+              return todo;
+
+          }else{
+            if(action === 'plus' && todo.rating < score.max)
+              return {...todo, rating : todo.rating + 0.1};
+            else if (action === 'minus' && todo.rating > score.min)
+              return {...todo, rating : todo.rating - 0.1 };
+            else
+              return todo;
+          }
+        }else{
+          return todo;
+        }
+      })
+    })
+  };
+
+
+
+  handleToggle = (key) => {
+    const {type} = this.state;
+
+    this.setState({
+      [type] : this.state[type].map(todo => {
         if(key === todo.key){
           return {...todo, done : !todo.done}
         }else{
           return todo;
         }
-			})	
-		}) 
+			})
+		})
+  };
+
+  handleTabToggle = (type) => {
+    this.setState({
+      type
+    })
   };
 
 	render() {
+	  const {type} = this.state;
+
 		return (
 			<div className="App">
-				<h3>LIST of SONGS</h3>
-        <CreateForm onSubmit={this.handleSubmit}/>
+        <ul className="tabMenu">
+          <li onClick={() => {this.handleTabToggle('songs')}} className={type === 'songs'? 'on' : ''}> SONGS </li>
+          <li onClick={() => {this.handleTabToggle('apps')}} className={type === 'apps'? 'on' : ''}> APPS </li>
+        </ul>
+				<h3>LIST of {type.toUpperCase()}</h3>
+        <CreateForm type={type} onSubmit={this.handleSubmit}/>
 
 				<div className="TodoList">
-          <TodoItem todos={this.state.todos} handleToggle={this.handleToggle} handleRemove={this.handleRemove} />
+          {this.state[type].map(todo => {
+            return(
+              <TodoItem
+                key={todo.key}
+                type={type}
+                todo={todo}
+                handleToggle={this.handleToggle}
+                handleRemove={this.handleRemove}
+                handleRating ={this.handleRating}
+              />
+            )
+          })}
 				</div>
 			</div>
 		)

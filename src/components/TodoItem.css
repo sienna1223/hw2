@@ -7,8 +7,7 @@
 	cursor: pointer;
 }
 
-.TodoItem:hover .check,
-.TodoItem:hover .remove {
+.TodoItem:hover .check{
 	opacity: 0.5;
 }
 
@@ -17,7 +16,6 @@
 }
 
 .TodoItem.active {
-	text-decoration: line-through;
 	color: #dda0dd;
 }
 
@@ -35,8 +33,19 @@
 	overflow: hidden;
 }
 
-.TodoItem .remove {
+.TodoItem .btns > *{
 	float: right;
 	font-size: 1.2rem;
-	opacity: 0;
 }
+
+.TodoItem .btns button {
+  font-size:0.875rem;
+  height:22px;
+  margin:0 1px;
+}
+
+.TodoItem .stars {
+  float: right;
+  margin-right:10px;
+}
+

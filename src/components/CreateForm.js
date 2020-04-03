@@ -20,10 +20,15 @@ class CreateForm extends Component {
   };
 
 	render() {
+	  const vowel = ['a','e','i','o','u'];
+	  const type = vowel.indexOf(this.props.type.charAt(0).toLowerCase()) > -1
+                    ? `an ${this.props.type}`
+                    : `a ${this.props.type}`;
+
 		return (
       <div className="CreateForm" onSubmit={this.handleSubmit}>
         <form className="form_container" >
-          <input value={this.state.input} onChange={this.handleChange} placeholder={'add a song'} />
+          <input value={this.state.input} onChange={this.handleChange} placeholder={`add ${type}`} />
           <button>추가</button>
         </form>
       </div>
